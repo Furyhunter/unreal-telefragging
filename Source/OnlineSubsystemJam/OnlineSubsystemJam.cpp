@@ -1,6 +1,13 @@
 #include "OnlineSubsystemJam.h"
+#include "OnlineSessionJam.h"
 
 IOnlineSessionPtr FOnlineSubsystemJam::GetSessionInterface() const
 {
-	return nullptr;
+	return SessionInterface;
+}
+
+bool FOnlineSubsystemJam::Init()
+{
+	SessionInterface = MakeShareable(new FOnlineSessionJam());
+	return true;
 }

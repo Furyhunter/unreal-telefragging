@@ -3,10 +3,12 @@
 #include "OnlineSubsystem.h"
 #include "OnlineSubsystemImpl.h"
 
-typedef TSharedPtr<class FOnlineSubsystemJam, ESPMode::ThreadSafe> FOnlineSubsystemJamPtr;
+typedef TSharedPtr<class FOnlineSessionJam, ESPMode::ThreadSafe> FOnlineSessionJamPtr;
 
 class ONLINESUBSYSTEMJAM_API FOnlineSubsystemJam : public FOnlineSubsystemImpl, public FTickerObjectBase
 {
+private:
+	FOnlineSessionJamPtr SessionInterface = nullptr;
 public:
 	FOnlineSubsystemJam(FName InInstanceName)
 	{
@@ -34,7 +36,7 @@ public:
 	virtual IOnlineMessagePtr GetMessageInterface() const override { return nullptr; }
 	virtual IOnlinePresencePtr GetPresenceInterface() const override { return nullptr; }
 	virtual bool IsLocalPlayer(const FUniqueNetId& UniqueId) const override { return false; }
-	virtual bool Init() override { return false; }
+	virtual bool Init() override;
 	virtual bool Shutdown() override { return false; }
 	virtual bool Exec(class UWorld* InWorld, const TCHAR* Cmd, FOutputDevice& Ar) override { return true; }
 	bool IsEnabled() const { return false; }
@@ -44,3 +46,5 @@ public:
 
 	bool Tick(float Delta) override { return true; }
 };
+
+typedef TSharedPtr<class FOnlineSubsystemJam, ESPMode::ThreadSafe> FOnlineSubsystemJamPtr;
