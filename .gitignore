@@ -1,0 +1,18 @@
+# UE4 local data
+Binaries/*
+Intermediate/*
+Saved/*
+DerivedDataCache/*
+
+# Visual Studio files
+*.sdf
+*.suo
+
+# Sublime stuff
+*.sublime-project
+*.sublime-workspace
+
+# Any stray object files
+
+*.obj
+*.exp

@@ -1,0 +1,13 @@
+{
+	"FileVersion": 3,
+	"EngineAssociation": "{F5508D03-4CAF-85DB-E102-0EAA532EB64D}",
+	"Category": "",
+	"Description": "",
+	"Modules": [
+		{
+			"Name": "Telefragger",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		}
+	]
+}
