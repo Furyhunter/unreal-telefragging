@@ -8,7 +8,11 @@ ADeathmatchGameMode::ADeathmatchGameMode(const class FPostConstructInitializePro
 	: Super(PCIP)
 {
 	PlayerControllerClass = ATelefraggerPlayerController::StaticClass();
-	// TODO DefaultPawnClass =
+	static ConstructorHelpers::FObjectFinder<UBlueprint> PlayerPawnObject(TEXT("Blueprint'/Game/Blueprints/PlayerCharacter_BP.PlayerCharacter_BP'"));
+	if (PlayerPawnObject.Object != nullptr)
+	{
+		DefaultPawnClass = (UClass*) PlayerPawnObject.Object->GeneratedClass;
+	}
 	DefaultPlayerName = "Scrub";
 	PlayerStateClass = ADeathmatchPlayerState::StaticClass();
 	GameStateClass = ADeathmatchGameState::StaticClass();
