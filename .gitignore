@@ -6,7 +6,9 @@ DerivedDataCache/*
 
 # Visual Studio files
 *.sdf
+*.opensdf
 *.suo
+*.sln
 
 # Sublime stuff
 *.sublime-project
