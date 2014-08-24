@@ -13,6 +13,7 @@ class TELEFRAGGER_API ATelefraggerPlayerController : public APlayerController
 {
 	GENERATED_UCLASS_BODY()
 
-	
-	
+
+	UFUNCTION( BlueprintCallable, Category=Respawn)
+	void Respawn();
 };
