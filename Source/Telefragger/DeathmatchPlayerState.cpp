@@ -6,3 +6,8 @@ ADeathmatchPlayerState::ADeathmatchPlayerState(const class FPostConstructInitial
 {
 
 }
+
+void ADeathmatchPlayerState::IncrementScore()
+{
+	APlayerState::Score += 1.0f;
+}
