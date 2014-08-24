@@ -18,7 +18,7 @@ private:
 		}
 	}
 public:
-	FOnlineFactoryJam();
+	FOnlineFactoryJam() {}
 	virtual ~FOnlineFactoryJam()
 	{
 		DestroySubsystem();
@@ -54,10 +54,17 @@ FOnlineSubsystemJamPtr FOnlineFactoryJam::JamSingleton = nullptr;
 
 void FOnlineSubsystemJamModule::StartupModule()
 {
-	UE_LOG_ONLINE(Warning, TEXT("Jam Stubbed: StartupModule"));
+	JamFactory = new FOnlineFactoryJam();
+
+	FOnlineSubsystemModule& OSS = FModuleManager::GetModuleChecked<FOnlineSubsystemModule>("OnlineSubsystem");
+	OSS.RegisterPlatformService("Jam", JamFactory);
 }
 
 void FOnlineSubsystemJamModule::ShutdownModule()
 {
-	UE_LOG_ONLINE(Warning, TEXT("Jam Stubbed: ShutdownModule"));
+	FOnlineSubsystemModule& OSS = FModuleManager::GetModuleChecked<FOnlineSubsystemModule>("OnlineSubsystem");
+	OSS.UnregisterPlatformService("Jam");
+
+	delete JamFactory;
+	JamFactory = nullptr;
 }

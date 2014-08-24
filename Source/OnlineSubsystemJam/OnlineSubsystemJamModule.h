@@ -6,6 +6,12 @@
 
 class FOnlineSubsystemJamModule : public IModuleInterface
 {
+private:
+	class FOnlineFactoryJam* JamFactory = nullptr;
+public:
+	FOnlineSubsystemJamModule() {}
+	virtual ~FOnlineSubsystemJamModule() {}
+
 	virtual void StartupModule() override;
 	virtual void ShutdownModule() override;
 

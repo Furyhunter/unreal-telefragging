@@ -20,6 +20,6 @@ public class TelefraggerEditorTarget : TargetRules
 		ref List<string> OutExtraModuleNames
 		)
 	{
-		OutExtraModuleNames.AddRange( new string[] { "Telefragger", "OnlineSubsystemJam" } );
+		OutExtraModuleNames.AddRange( new string[] { "Telefragger" } );
 	}
 }
