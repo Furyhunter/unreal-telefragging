@@ -10,4 +10,8 @@ ATelefraggerPlayerController::ATelefraggerPlayerController(const class FPostCons
 
 }
 
+void ATelefraggerPlayerController::Respawn()
+{
+	APlayerController::ServerRestartPlayer();
+}
 
