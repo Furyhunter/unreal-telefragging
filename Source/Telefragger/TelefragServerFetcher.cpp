@@ -40,6 +40,8 @@ void ATelefragServerFetcher::HttpGetServersDelegate(FHttpRequestPtr InRequest, F
 	TSharedRef<TJsonReader<TCHAR>> JsonReader = TJsonReaderFactory<TCHAR>::Create(ContentString);
 	FJsonSerializer::Deserialize(JsonReader, JsonBaseObject);
 	const TArray<TSharedPtr<FJsonValue, ESPMode::NotThreadSafe>>& JsonArray = JsonBaseObject->GetArrayField("servers");
+
+	
 	
 	for (int32 i = 0; i < JsonArray.Num(); i++)
 	{
@@ -48,9 +50,12 @@ void ATelefragServerFetcher::HttpGetServersDelegate(FHttpRequestPtr InRequest, F
 		TSharedPtr<FJsonObject> JsObj = Value->AsObject();
 
 		FString OutString;
+		double OutNumber;
 
 		Result.Name = JsObj->TryGetStringField("name", OutString) ? OutString : "Untitled Server";
 		Result.URL = JsObj->TryGetStringField("url", OutString) ? OutString : "127.0.0.1";
+		Result.GameVersion = JsObj->TryGetNumberField("version", OutNumber) ? FMath::RoundToInt(OutNumber) : 0;
+		Result.Port = JsObj->TryGetNumberField("port", OutNumber) ? FMath::RoundToInt(OutNumber) : 7777;
 		Results.Add(Result);
 	}
 

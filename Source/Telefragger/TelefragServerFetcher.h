@@ -12,6 +12,10 @@ struct TELEFRAGGER_API FServerFetcherResult
 	FString Name;
 	UPROPERTY(BlueprintReadOnly, Category = "Online")
 	FString URL;
+	UPROPERTY(BlueprintReadOnly, Category = "Online")
+	int32 GameVersion;
+	UPROPERTY(BlueprintReadOnly, Category = "Online")
+	int32 Port;
 };
 
 UCLASS(Config=Game)
@@ -29,6 +33,9 @@ class TELEFRAGGER_API ATelefragServerFetcher : public AActor
 
 	UFUNCTION(BlueprintPure, Category = "Online", meta = (FriendlyName = "Get Is Querying"))
 	bool IsQuerying();
+
+	UPROPERTY(BlueprintReadOnly, Config, Category = "Online")
+	int32 CurrentGameVersion;
 
 	UFUNCTION(BlueprintCallable, Category = "Online", meta = (FriendlyName = "Get Query Search Results"))
 	TArray<FServerFetcherResult>& GetResults();
