@@ -7,7 +7,7 @@ ADeathmatchHUD::ADeathmatchHUD(const class FPostConstructInitializeProperties& P
 {
 }
 
-uint32 ADeathmatchHUD::GetPlayerScore() const
+int32 ADeathmatchHUD::GetPlayerScore()
 {
 	APlayerController* p = GetOwningPlayerController();
 	if (p)

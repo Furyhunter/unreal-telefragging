@@ -8,5 +8,6 @@ class TELEFRAGGER_API ADeathmatchHUD : public AHUD
 {
 	GENERATED_UCLASS_BODY()
 public:
-	uint32 GetPlayerScore() const;
+	UFUNCTION(BlueprintPure, Category = "Game", meta = ( FriendlyName = "Get Player Score", Keywords = "get player score"))
+	int32 GetPlayerScore();
 };
