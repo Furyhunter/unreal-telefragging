@@ -7,4 +7,7 @@ UCLASS()
 class TELEFRAGGER_API ADeathmatchPlayerState : public APlayerState
 {
 	GENERATED_UCLASS_BODY()
+
+	UFUNCTION( BlueprintCallable, Category=Score)
+	void IncrementScore();
 };
