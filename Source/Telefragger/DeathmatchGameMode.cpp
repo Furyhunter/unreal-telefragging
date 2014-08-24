@@ -53,7 +53,7 @@ void ADeathmatchGameMode::HandleLeavingMap()
 
 void ADeathmatchGameMode::HandleMatchIsWaitingToStart()
 {
-	if (GWorld && !GWorld->IsPlayInEditor() && !GWorld->IsPlayInMobilePreview() && !GWorld->IsPlayInPreview() && !GetWorldTimerManager().TimerExists(this, &ADeathmatchGameMode::SendHeartbeatToMS))
+	if (GWorld && !GWorld->IsPlayInEditor() && !GWorld->IsPlayInMobilePreview() && !GWorld->IsPlayInPreview() && GWorld->IsServer() && !GetWorldTimerManager().TimerExists(this, &ADeathmatchGameMode::SendHeartbeatToMS))
 	{
 		GetWorldTimerManager().SetTimer(this, &ADeathmatchGameMode::SendHeartbeatToMS, 4.f, true, 4.f);
 	}
