@@ -39,7 +39,7 @@ public:
 	virtual bool Init() override;
 	virtual bool Shutdown() override { return false; }
 	virtual bool Exec(class UWorld* InWorld, const TCHAR* Cmd, FOutputDevice& Ar) override { return true; }
-	bool IsEnabled() const { return false; }
+	bool IsEnabled() const;
 	virtual bool IsServer() const override { return false; }
 	virtual void SetForceDedicated(bool bForce) override { }
 	FString GetAppId() const override { return "Jam"; }

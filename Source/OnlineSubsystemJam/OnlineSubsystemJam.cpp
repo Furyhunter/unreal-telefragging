@@ -11,3 +11,8 @@ bool FOnlineSubsystemJam::Init()
 	SessionInterface = MakeShareable(new FOnlineSessionJam());
 	return true;
 }
+
+bool FOnlineSubsystemJam::IsEnabled() const
+{
+	return true;
+}

@@ -2,6 +2,7 @@
 
 #include "OnlineSessionInterface.h"
 #include "OnlineSubsystemJam.h"
+#include "Http.h"
 
 class FOnlineSessionJam : public IOnlineSession
 {
@@ -12,6 +13,8 @@ protected:
 	class FNamedOnlineSession* AddNamedSession(FName SessionName, const FOnlineSession& Session) override { return nullptr; }
 public:
 	virtual ~FOnlineSessionJam() {}
+
+	TSharedPtr<FOnlineSessionSearch> CurrentSessionSearch = nullptr;
 
 	FNamedOnlineSession* GetNamedSession(FName SessionName) override { return nullptr; }
 	void RemoveNamedSession(FName SessionName) override {}
@@ -25,7 +28,7 @@ public:
 	bool IsPlayerInSession(FName SessionName, const FUniqueNetId& UniqueId) override { return false; }
 	bool StartMatchmaking(int32 SearchingPlayerNum, FName SessionName, const FOnlineSessionSettings& NewSessionSettings, TSharedRef<FOnlineSessionSearch>& SearchSettings) override { return false; }
 	bool CancelMatchmaking(int32 SearchingPlayerNum, FName SessionName) override { return false; }
-	bool FindSessions(int32 SearchingPlayerNum, const TSharedRef<FOnlineSessionSearch>& SearchSettings) { return false; }
+	bool FindSessions(int32 SearchingPlayerNum, const TSharedRef<FOnlineSessionSearch>& SearchSettings) override;
 	bool CancelFindSessions() override { return false; }
 	bool PingSearchResults(const FOnlineSessionSearchResult& SearchResult) override { return false; }
 	bool JoinSession(int32 LocalUserNum, FName SessionName, const FOnlineSessionSearchResult& DesiredSession) { return false; }
@@ -41,5 +44,7 @@ public:
 	bool UnregisterPlayers(FName SessionName, const TArray< TSharedRef<class FUniqueNetId> >& Players) override { return false; }
 	int32 GetNumSessions() override { return 0; }
 	void DumpSessionState() override {}
+
+	void ProcessListGetHttpRequest(FHttpRequestPtr InRequest, FHttpResponsePtr InResponse, bool unknown);
 
 };
