@@ -22,7 +22,9 @@ ADeathmatchGameMode::ADeathmatchGameMode(const class FPostConstructInitializePro
 	DefaultPlayerName = "Scrub";
 	PlayerStateClass = ADeathmatchPlayerState::StaticClass();
 	GameStateClass = ADeathmatchGameState::StaticClass();
-	HUDClass = ADeathmatchHUD::StaticClass();
+
+	static ConstructorHelpers::FObjectFinder<UBlueprint> HUDObject(TEXT("Blueprint'/Game/Blueprints/DeathmatchHUD_BP.DeathmatchHUD_BP'"));
+	HUDClass = (UClass*) HUDObject.Object->GeneratedClass;
 
 	bool bSendingHeartbeat = false;
 	
