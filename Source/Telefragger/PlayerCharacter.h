@@ -14,5 +14,4 @@ class TELEFRAGGER_API APlayerCharacter : public ACharacter
 	GENERATED_UCLASS_BODY()
 
 	
-	
 };
