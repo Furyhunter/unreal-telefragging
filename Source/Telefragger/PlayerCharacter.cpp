@@ -10,10 +10,3 @@ APlayerCharacter::APlayerCharacter(const class FPostConstructInitializePropertie
 
 }
 
-
-APlayerCharacter::SetParticleParameter(TSubobjectPtr<UParticleSystemComponent> system, float value)
-{
-
-}
-
-
