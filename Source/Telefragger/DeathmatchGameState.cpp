@@ -6,3 +6,27 @@ ADeathmatchGameState::ADeathmatchGameState(const class FPostConstructInitializeP
 {
 
 }
+
+void ADeathmatchGameState::PlayerJoinedServer_Implementation(const FString& PlayerName)
+{
+	if (GEngine)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Cyan, FString::Printf(TEXT("%s has joined the server."), *PlayerName));
+	}
+}
+
+void ADeathmatchGameState::PlayerLeftServer_Implementation(const FString& PlayerName)
+{
+	if (GEngine)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Cyan, FString::Printf(TEXT("%s has left the server."), *PlayerName));
+	}
+}
+
+void ADeathmatchGameState::PlayerChat_Implementation(const FString& PlayerName, const FString& Message)
+{
+	if (GEngine)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::White, FString::Printf(TEXT("%s: %s"), *PlayerName, *Message));
+	}
+}

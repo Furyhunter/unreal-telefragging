@@ -71,3 +71,21 @@ void ADeathmatchGameMode::HandleLeavingMap()
 		HttpRequest->ProcessRequest(); // fire and forget!
 	}
 }
+
+APlayerController* ADeathmatchGameMode::Login(UPlayer* NewPlayer, const FString& Portal, const FString& Options, const TSharedPtr<FUniqueNetId>& UniqueId, FString& ErrorMessage)
+{
+	auto ret = Super::Login(NewPlayer, Portal, Options, UniqueId, ErrorMessage);
+
+	// Tell clients with an RPC
+	GetGameState<ADeathmatchGameState>()->PlayerJoinedServer(ret->PlayerState->PlayerName);
+
+	return ret;
+}
+
+void ADeathmatchGameMode::Logout(AController* Exiting)
+{
+	Super::Logout(Exiting);
+
+	// Tell clients with RPC
+	GetGameState<ADeathmatchGameState>()->PlayerLeftServer(Exiting->PlayerState->PlayerName);
+}
