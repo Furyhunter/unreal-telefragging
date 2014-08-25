@@ -53,6 +53,8 @@ void ADeathmatchGameMode::InitGame(const FString& MapName, const FString& Option
 		GetWorldTimerManager().SetTimer(this, &ADeathmatchGameMode::SendHeartbeatToMS, 4.f, true, 4.f);
 		bSendingHeartbeat = true;
 	}
+
+	GameSession->MaxPlayers = 16;
 }
 
 void ADeathmatchGameMode::HandleLeavingMap()
@@ -88,4 +90,21 @@ void ADeathmatchGameMode::Logout(AController* Exiting)
 
 	// Tell clients with RPC
 	GetGameState<ADeathmatchGameState>()->PlayerLeftServer(Exiting->PlayerState->PlayerName);
+}
+
+bool ADeathmatchGameMode::ReadyToEndMatch()
+{
+	int32 highest = 0;
+	APlayerState* Winner = nullptr;
+	for (APlayerState* P : GameState->PlayerArray)
+	{
+		Winner = highest >= P->Score ? Winner : P;
+		highest = highest >= P->Score ? highest : FMath::RoundToInt(P->Score);
+	}
+
+	if (highest > 10)
+	{
+		return true;
+	}
+	return false;
 }
