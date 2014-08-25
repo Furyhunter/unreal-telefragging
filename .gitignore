@@ -1,4 +1,5 @@
 # UE4 local data
+Build/*
 Binaries/*
 Intermediate/*
 Saved/*
@@ -18,3 +19,7 @@ DerivedDataCache/*
 
 *.obj
 *.exp
+
+# Swap files
+*~
+*.swp

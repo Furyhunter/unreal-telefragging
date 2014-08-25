@@ -22,7 +22,12 @@ ADeathmatchGameMode::ADeathmatchGameMode(const class FPostConstructInitializePro
 	DefaultPlayerName = "Scrub";
 	PlayerStateClass = ADeathmatchPlayerState::StaticClass();
 	GameStateClass = ADeathmatchGameState::StaticClass();
-	HUDClass = ADeathmatchHUD::StaticClass();
+
+	static ConstructorHelpers::FObjectFinder<UBlueprint> HUDObject(TEXT("Blueprint'/Game/Blueprints/DeathmatchHUD_BP.DeathmatchHUD_BP'"));
+	HUDClass = (UClass*) HUDObject.Object->GeneratedClass;
+
+	bool bSendingHeartbeat = false;
+	
 }
 
 void ADeathmatchGameMode::SendHeartbeatToMS()
@@ -38,23 +43,31 @@ void ADeathmatchGameMode::SendHeartbeatToMS()
 	// fire and forget... doesn't really matter to us if it succeeds
 }
 
+void ADeathmatchGameMode::InitGame(const FString& MapName, const FString& Options, FString& ErrorMessage)
+{
+	Super::InitGame(MapName, Options, ErrorMessage);
+
+	if (GWorld && GWorld->IsServer() && !GWorld->IsPlayInEditor())
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Heartbeat enabled"));
+		GetWorldTimerManager().SetTimer(this, &ADeathmatchGameMode::SendHeartbeatToMS, 4.f, true, 4.f);
+		bSendingHeartbeat = true;
+	}
+}
+
 void ADeathmatchGameMode::HandleLeavingMap()
 {
 	// clear the timer before it tries to heartbeat again...
-	GetWorldTimerManager().ClearTimer(this, &ADeathmatchGameMode::SendHeartbeatToMS);
-
-	TSharedPtr<IHttpRequest> HttpRequest = FHttpModule::Get().CreateRequest();
-	FString Value;
-	GConfig->GetString(TEXT("/Script/Telefragger.TelefragServerFetcher"), TEXT("HttpServerAddress"), Value, GGameIni);
-	HttpRequest->SetURL(Value + "/remove");
-	HttpRequest->SetVerb("POST");
-	HttpRequest->ProcessRequest(); // fire and forget!
-}
-
-void ADeathmatchGameMode::HandleMatchIsWaitingToStart()
-{
-	if (GWorld && !GWorld->IsPlayInEditor() && !GWorld->IsPlayInMobilePreview() && !GWorld->IsPlayInPreview() && GWorld->IsServer() && !GetWorldTimerManager().TimerExists(this, &ADeathmatchGameMode::SendHeartbeatToMS))
+	if (bSendingHeartbeat)
 	{
-		GetWorldTimerManager().SetTimer(this, &ADeathmatchGameMode::SendHeartbeatToMS, 4.f, true, 4.f);
+		// Deregister with the MS.
+		GetWorldTimerManager().ClearTimer(this, &ADeathmatchGameMode::SendHeartbeatToMS);
+
+		TSharedPtr<IHttpRequest> HttpRequest = FHttpModule::Get().CreateRequest();
+		FString Value;
+		GConfig->GetString(TEXT("/Script/Telefragger.TelefragServerFetcher"), TEXT("HttpServerAddress"), Value, GGameIni);
+		HttpRequest->SetURL(Value + "/remove");
+		HttpRequest->SetVerb("POST");
+		HttpRequest->ProcessRequest(); // fire and forget!
 	}
 }

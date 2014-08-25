@@ -22,6 +22,9 @@ class TELEFRAGGER_API ADeathmatchGameMode : public AGameMode
 	UFUNCTION(BlueprintCallable, Category = "Online")
 	void SendHeartbeatToMS();
 
+	UPROPERTY()
+	bool bSendingHeartbeat;
+
 	virtual void HandleLeavingMap() override;
-	virtual void HandleMatchIsWaitingToStart() override;
+	virtual void InitGame(const FString& MapName, const FString& Options, FString& ErrorMessage) override;
 };
