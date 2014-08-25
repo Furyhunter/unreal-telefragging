@@ -10,4 +10,7 @@ class TELEFRAGGER_API ADeathmatchHUD : public AHUD
 public:
 	UFUNCTION(BlueprintPure, Category = "Game", meta = ( FriendlyName = "Get Player Score", Keywords = "get player score"))
 	int32 GetPlayerScore();
+
+	UFUNCTION(BlueprintCallable, Category = "Game", meta = (FriendlyName = "Send Chat Message"))
+	void SendChat(const FString& Message);
 };

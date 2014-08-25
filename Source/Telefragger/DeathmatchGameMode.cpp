@@ -53,6 +53,8 @@ void ADeathmatchGameMode::InitGame(const FString& MapName, const FString& Option
 		GetWorldTimerManager().SetTimer(this, &ADeathmatchGameMode::SendHeartbeatToMS, 4.f, true, 4.f);
 		bSendingHeartbeat = true;
 	}
+
+	GameSession->MaxPlayers = 16;
 }
 
 void ADeathmatchGameMode::HandleLeavingMap()
@@ -70,4 +72,39 @@ void ADeathmatchGameMode::HandleLeavingMap()
 		HttpRequest->SetVerb("POST");
 		HttpRequest->ProcessRequest(); // fire and forget!
 	}
+}
+
+APlayerController* ADeathmatchGameMode::Login(UPlayer* NewPlayer, const FString& Portal, const FString& Options, const TSharedPtr<FUniqueNetId>& UniqueId, FString& ErrorMessage)
+{
+	auto ret = Super::Login(NewPlayer, Portal, Options, UniqueId, ErrorMessage);
+
+	// Tell clients with an RPC
+	GetGameState<ADeathmatchGameState>()->PlayerJoinedServer(ret->PlayerState->PlayerName);
+
+	return ret;
+}
+
+void ADeathmatchGameMode::Logout(AController* Exiting)
+{
+	Super::Logout(Exiting);
+
+	// Tell clients with RPC
+	GetGameState<ADeathmatchGameState>()->PlayerLeftServer(Exiting->PlayerState->PlayerName);
+}
+
+bool ADeathmatchGameMode::ReadyToEndMatch()
+{
+	int32 highest = 0;
+	APlayerState* Winner = nullptr;
+	for (APlayerState* P : GameState->PlayerArray)
+	{
+		Winner = highest >= P->Score ? Winner : P;
+		highest = highest >= P->Score ? highest : FMath::RoundToInt(P->Score);
+	}
+
+	if (highest > 10)
+	{
+		return true;
+	}
+	return false;
 }
