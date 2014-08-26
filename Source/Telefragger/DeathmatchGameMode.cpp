@@ -19,7 +19,7 @@ ADeathmatchGameMode::ADeathmatchGameMode(const class FPostConstructInitializePro
 	{
 		PlayerControllerClass = (UClass*) PlayerControllerObject.Object->GeneratedClass;
 	}
-	DefaultPlayerName = "Scrub";
+	DefaultPlayerName = "Scrubmaster";
 	PlayerStateClass = ADeathmatchPlayerState::StaticClass();
 	GameStateClass = ADeathmatchGameState::StaticClass();
 
@@ -35,8 +35,14 @@ void ADeathmatchGameMode::SendHeartbeatToMS()
 	TSharedPtr<IHttpRequest> HttpRequest = FHttpModule::Get().CreateRequest();
 	FString Value;
 	GConfig->GetString(TEXT("/Script/Telefragger.TelefragServerFetcher"), TEXT("HttpServerAddress"), Value, GGameIni);
+
+	FString ServerName = "Test";
+	if (GWorld)
+	{
+		ServerName = GWorld->GetFirstLocalPlayerFromController()->PlayerController->PlayerState->PlayerName;
+	}
 	HttpRequest->SetURL(Value + "/heartbeat");
-	HttpRequest->SetContentAsString(TEXT("name=Test"));
+	HttpRequest->SetContentAsString("name=" + ServerName + "'s%20Server");
 	HttpRequest->SetHeader("Content-Type", "application/x-www-form-urlencoded");
 	HttpRequest->SetVerb("POST");
 	HttpRequest->ProcessRequest();
