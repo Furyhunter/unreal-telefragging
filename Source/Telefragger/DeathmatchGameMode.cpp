@@ -9,12 +9,12 @@
 ADeathmatchGameMode::ADeathmatchGameMode(const class FPostConstructInitializeProperties& PCIP)
 	: Super(PCIP)
 {
-	static ConstructorHelpers::FObjectFinder<UBlueprint> PlayerPawnObject(TEXT("Blueprint'/Game/Blueprints/PlayerCharacter_BP.PlayerCharacter_BP'"));
+	ConstructorHelpers::FObjectFinder<UBlueprint> PlayerPawnObject(TEXT("Blueprint'/Game/Blueprints/PlayerCharacter_BP.PlayerCharacter_BP'"));
 	if (PlayerPawnObject.Object != nullptr)
 	{
 		DefaultPawnClass = (UClass*) PlayerPawnObject.Object->GeneratedClass;
 	}
-	static ConstructorHelpers::FObjectFinder<UBlueprint> PlayerControllerObject(TEXT("Blueprint'/Game/Blueprints/TelefraggerPlayerController_BP.TelefraggerPlayerController_BP'"));
+	ConstructorHelpers::FObjectFinder<UBlueprint> PlayerControllerObject(TEXT("Blueprint'/Game/Blueprints/TelefraggerPlayerController_BP.TelefraggerPlayerController_BP'"));
 	if (PlayerPawnObject.Object != nullptr)
 	{
 		PlayerControllerClass = (UClass*) PlayerControllerObject.Object->GeneratedClass;
@@ -23,8 +23,11 @@ ADeathmatchGameMode::ADeathmatchGameMode(const class FPostConstructInitializePro
 	PlayerStateClass = ADeathmatchPlayerState::StaticClass();
 	GameStateClass = ADeathmatchGameState::StaticClass();
 
-	static ConstructorHelpers::FObjectFinder<UBlueprint> HUDObject(TEXT("Blueprint'/Game/Blueprints/DeathmatchHUD_BP.DeathmatchHUD_BP'"));
-	HUDClass = (UClass*) HUDObject.Object->GeneratedClass;
+	ConstructorHelpers::FObjectFinder<UBlueprint> HUDObject(TEXT("Blueprint'/Game/Blueprints/DeathmatchHUD_BP.DeathmatchHUD_BP'"));
+	if (HUDObject.Object != nullptr)
+	{
+		HUDClass = (UClass*)HUDObject.Object->GeneratedClass;
+	}
 
 	bool bSendingHeartbeat = false;
 	
